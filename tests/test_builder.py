@@ -278,6 +278,24 @@ class ProviderFormTests(BuilderTestCase):
         self.assertIn('this checkout has none', response['_log'])
         self.assertTrue((older / 'build/plug/Thing.vst3/bin').is_file())
 
+    def test_configured_tooling_checkout_and_its_removal(self):
+        older = self.base / 'plugins-older'
+        git(self.root, 'worktree', 'add', '-q', '-b', 'older', str(older))
+        tooling = self.base / 'plugins-tooling'
+        git(self.root, 'worktree', 'add', '-q', '-b', 'tooling', str(tooling))
+        for checkout in (self.root, older):
+            (checkout / 'omso-build.json').unlink()
+        self.api(dict(operation='add_repository', path=str(older), tooling=str(tooling)))
+
+        def manifest_of(path):
+            repository = self.api(dict(operation='sources'))['repositories'][0]
+            self.assertEqual(repository['path'], str(self.root))
+            return next(item for item in repository['sources'] if item['path'] == str(path))['manifest']
+        self.assertEqual(manifest_of(older), dict(path=str(tooling), kind='tooling'))
+        # Once the tooling worktree is removed, main's checkout (here without a manifest) is used again.
+        git(self.root, 'worktree', 'remove', '--force', str(tooling))
+        self.assertIsNone(manifest_of(older))
+
     def test_shared_lock_excludes_the_repository_tools(self):
         lock = self.root / 'build/.finder-build.lock'
         lock.parent.mkdir(parents=True)

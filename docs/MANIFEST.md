@@ -7,8 +7,9 @@ install them. The builder itself knows no products.
 A checkout with its own manifest is built with it, so every branch builds with its
 own definitions. A checkout without one (for example a branch created before the
 manifest existed) is built with the manifest of the repository's **tooling
-checkout**: the checkout of `main` (else `master`, else the primary checkout), or
-the `tooling` path set for that repository in the builder's repository list. The
+checkout**: the `tooling` path set for that repository in the builder's repository
+list while that checkout exists, else the checkout of `main` (else `master`, else
+the primary checkout). The
 selected checkout remains the source; only the build definitions come from the
 tooling checkout. If neither has a manifest, the checkout is listed but cannot be
 built.

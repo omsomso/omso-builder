@@ -14,8 +14,11 @@ GIT_ERRORS = (OSError, ValueError, subprocess.SubprocessError)
 
 
 def _tooling(entry, checkouts):
+    """The configured tooling checkout while it exists, else main's checkout, else the primary one."""
     if entry.get('tooling'):
-        return str(Path(entry['tooling']).resolve())
+        configured = str(Path(entry['tooling']).resolve())
+        if configured in [checkout['path'] for checkout in checkouts]:
+            return configured
     for branch in ('main', 'master'):
         match = next((checkout for checkout in checkouts if checkout['branch'] == branch), None)
         if match:
@@ -64,9 +67,7 @@ def _repository(entry, only=None):
         return result
     tooling = _tooling(entry, checkouts)
     fallback, problem = None, None
-    if tooling and tooling not in [checkout['path'] for checkout in checkouts]:
-        problem = result['problem'] = 'The configured tooling checkout is not a checkout of this repository.'
-    elif tooling:
+    if tooling:
         try:
             fallback = manifests.load(tooling)
         except manifests.ManifestError as error:

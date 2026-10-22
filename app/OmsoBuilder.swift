@@ -266,7 +266,7 @@ struct BuilderView: View {
                 Text("Installation copies an already tested build and is usually quick. A full build also compiles and tests.")
                     .font(.caption).foregroundStyle(.secondary)
             }.frame(minWidth: 380)
-        }.padding(24).frame(minWidth: 980, idealWidth: 1060, minHeight: 750)
+        }.padding(24).frame(minWidth: 980, idealWidth: 1060, minHeight: 820)
             .onChange(of: repositoryPath) { path in switchRepository(path) }
             .onChange(of: sourcePath) { _ in selected.formIntersection(Set(products)) }
             .onAppear { if let repository { pulls.refresh(root: repository.root) }; ready.refresh(builder: builder) }
@@ -299,8 +299,9 @@ struct BuilderView: View {
                 if let problem = source.problem {
                     Text(problem).font(.caption).foregroundStyle(.red)
                 } else if let manifest = source.manifest, manifest.kind == "tooling" {
-                    Text("This checkout has no omso-build.json; it is built with the one in \(manifest.path).")
-                        .font(.caption).foregroundStyle(.secondary).lineLimit(2).truncationMode(.middle)
+                    Text("No omso-build.json here; built with the one in \(manifest.path)")
+                        .font(.caption).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
+                        .help(manifest.path)
                 }
             }
         }
@@ -563,6 +564,6 @@ struct OmsoBuilderApp: App {
         Window("omso Builder", id: "builder") {
             if let builder, error == nil { BuilderView(builder: builder, repositories: repositories) }
             else { Text(error ?? "Builder folder unavailable.").padding(30).frame(width: 480) }
-        }.defaultSize(width: 1060, height: 800)
+        }.defaultSize(width: 1060, height: 900)
     }
 }
