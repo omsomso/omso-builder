@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "files": {
+    ".agent-config/render.py": "72168bdba8a841e17e7af3f43cb12bf3902242cd6091d40ca7cafe6f77a47562",
+    ".agent-config/shared.json": "44807f1c955e9f8a508c13be6e87175a217f6c8a00de82ea0bd1c83ddbb18c05",
+    "AGENTS.md": "53154de5549f4684ac0899b29fb5b0236004f9b5ac8f3f31a286c87c2630ebb4",
+    "CLAUDE.md": "53154de5549f4684ac0899b29fb5b0236004f9b5ac8f3f31a286c87c2630ebb4"
+  }
+}

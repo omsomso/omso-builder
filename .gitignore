@@ -1,0 +1,5 @@
+build/
+__pycache__/
+*.py[cod]
+/omso Builder.app
+.DS_Store
