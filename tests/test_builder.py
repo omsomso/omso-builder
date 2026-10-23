@@ -186,6 +186,18 @@ class StepsFormTests(BuilderTestCase):
         self.assertTrue((self.staging / 'Applications/omso/Demo.app/Contents/Info.plist').is_file())
         self.assertIn('Installing: Copy Demo.app to /Applications/omso', response['_log'])
 
+    def test_steps_do_not_inherit_the_python_stub_sdk(self):
+        # A shell probe: a python3 step would get SDKROOT again from the stub itself.
+        product = dict(STEPS_MANIFEST['products'][0], steps=[dict(name='Environment', run=[
+            '/bin/sh', '-c', 'test -z "${SDKROOT+set}" || exit 3'])])
+        (self.root / 'omso-build.json').write_text(json.dumps(dict(STEPS_MANIFEST, products=[product])))
+        self.environment['SDKROOT'] = '/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
+        response = self.api(dict(operation='build', source_dir=str(self.root), products=['Demo'], dry_run=False),
+                             expect=1)
+        # The step passed (no SDKROOT); the build then stops because the bundle was never made.
+        self.assertIn('Step elapsed: 0 seconds (exit 0)', response['_log'])
+        self.assertEqual(response['error']['code'], 'install_failed')
+
     def test_failed_step_stops_and_reports(self):
         (self.root / 'version.txt').unlink()
         response = self.api(dict(operation='build', source_dir=str(self.root), products=['Demo']), expect=1)

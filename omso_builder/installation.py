@@ -33,8 +33,15 @@ class InstallationError(ValueError):
 
 
 def environment(extra=None):
-    """The process environment with Homebrew tools on PATH (apps start with a minimal PATH)."""
+    """The process environment with Homebrew tools on PATH (apps start with a minimal PATH).
+
+    /usr/bin/python3, which runs the builder, is an xcrun stub that exports the
+    Command Line Tools SDK as SDKROOT. A Terminal build has none, and Xcode-generator
+    builds fail with it, so jobs do not inherit it.
+    """
     env = dict(os.environ)
+    if env.get('SDKROOT', '').startswith('/Library/Developer/CommandLineTools/'):
+        del env['SDKROOT']
     parts = [part for part in env.get('PATH', '/usr/bin:/bin:/usr/sbin:/sbin').split(':') if part]
     env['PATH'] = ':'.join(PATH_PREFIX + [part for part in parts if part not in PATH_PREFIX])
     env['PYTHONUNBUFFERED'] = '1'

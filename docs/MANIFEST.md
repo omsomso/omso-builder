@@ -59,7 +59,8 @@ Product fields: `name`, `steps` (nonempty), `install` (nonempty) and optional
 and `cwd` (relative to the checkout). A program name is found on `PATH`, which
 includes `/opt/homebrew/bin` and `/usr/local/bin`.
 
-Placeholders in `run` and `env` values:
+Placeholders in `run` and `env` values (a lowercase word in braces; other braces, such as
+a shell's `${VAR}`, are kept as written):
 
 | Placeholder | Value |
 | --- | --- |

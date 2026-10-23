@@ -15,7 +15,8 @@ SCHEMA = 1
 PLACEHOLDERS = ('source', 'manifest', 'jobs', 'run', 'tmp')
 DEFAULT_LOCK = 'build/.omso-builder.lock'
 OPTION_ID = re.compile(r'^[a-z][a-z0-9_]*$')
-_PLACEHOLDER = re.compile(r'\{([^{}]*)\}')
+# Lowercase words in braces are placeholders; other braces (such as a shell's ${VAR}) stay literal.
+_PLACEHOLDER = re.compile(r'\{([a-z_]+)\}')
 
 
 class ManifestError(ValueError):
