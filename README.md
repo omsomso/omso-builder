@@ -92,6 +92,5 @@ other dependencies. See [PROJECT_RULES](PROJECT_RULES.md) for the working rules.
 ## Status
 
 In use since 23 October 2026. It replaced VSTS's Build Plugins.app and build API v1,
-which were removed from VSTS (audio-plugins PR #139). omso DAW's manifest is on its
-`omso-builder-manifest` branch until that branch is merged; meanwhile the DAW is
-built with that worktree's manifest (the `tooling` entry in the repository list).
+which were removed from VSTS (audio-plugins PR #139). Both repositories' manifests
+are on their `main` branches (audio-plugins #137, omso-daw #27).
