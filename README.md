@@ -44,8 +44,7 @@ row shows the branch, its products, the repository and whether it is a Debug bui
 change.
 
 A checkout without its own `omso-build.json` (for example a VSTS branch older than
-the manifest) is built with the repository's main checkout's manifest, as the
-earlier Build Plugins app did. Set a different one with `tooling` in the repository
+the manifest) is built with the repository's main checkout's manifest. Set a different one with `tooling` in the repository
 list. Builds of one checkout never run at the same time; different checkouts can
 build side by side.
 
@@ -92,6 +91,7 @@ other dependencies. See [PROJECT_RULES](PROJECT_RULES.md) for the working rules.
 
 ## Status
 
-New on 22 October 2026 and on trial: the VSTS **Build Plugins.app** keeps working
-unchanged until this builder is accepted. Not yet done: retiring or redirecting
-the old app, and a real installation through the approval dialog.
+In use since 23 October 2026. It replaced VSTS's Build Plugins.app and build API v1,
+which were removed from VSTS (audio-plugins PR #139). omso DAW's manifest is on its
+`omso-builder-manifest` branch until that branch is merged; meanwhile the DAW is
+built with that worktree's manifest (the `tooling` entry in the repository list).
