@@ -217,9 +217,11 @@ struct BuilderView: View {
                     if repositories.isEmpty {
                         Text("No repositories yet.").foregroundStyle(.secondary)
                     } else {
+                        // A menu scales to any number of registered repositories; a segmented control does not.
+                        Text("Repository")
                         Picker("Repository", selection: $repositoryPath) {
                             ForEach(repositories) { Text($0.name).tag($0.path) }
-                        }.pickerStyle(.segmented)
+                        }.pickerStyle(.menu).labelsHidden().frame(maxWidth: .infinity, alignment: .leading)
                     }
                     Button("Add…") { addRepository() }.disabled(runner.running || checking)
                         .help("Register another Git repository that has an omso-build.json")
