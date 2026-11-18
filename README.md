@@ -6,6 +6,10 @@ tests the chosen products from that checkout as it is, including uncommitted edi
 and installs the result through one macOS approval dialog. No merge is needed to
 build a feature branch.
 
+omso Builder is open source under the GNU General Public License, version 3 or later
+(`LICENSE`). Copyright (C) 2026 omso. The repositories it builds today are private, so
+it is shared mainly as an example of the build tooling.
+
 The builder knows no products. Each repository describes its own products and
 build, test and install steps in an `omso-build.json` ([MANIFEST](docs/MANIFEST.md)):
 
